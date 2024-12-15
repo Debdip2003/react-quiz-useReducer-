@@ -11,22 +11,27 @@ import FinishScreen from "./FinishScreen";
 import Timer from "./Timer";
 import Footer from "./Footer";
 
+const SECONDS_PER_QUESTION = 30;
+
 const initialState = {
   questions: [],
-
-  //"loading", "error", "ready", "active", "finished"
   status: "loading",
   index: 0,
   answer: null,
   points: 0,
   highScore: 0,
-  secondsRemaining: 300,
+  secondsRemaining: null,
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case "dataReceived":
-      return { ...state, questions: action.payload, status: "ready" };
+      return {
+        ...state,
+        questions: action.payload,
+        status: "ready",
+        secondsRemaining: action.payload.length * SECONDS_PER_QUESTION,
+      };
     case "dataFailed":
       return { ...state, status: "error" };
     case "start":
